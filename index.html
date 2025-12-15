@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="You're invited to celebrate Saumya's birthday at midnight on December 18th">
+    <title>Saumya's Birthday Celebration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card-wrapper">
+            <!-- Side 1: Recipient Entry -->
+            <div class="card-side active" id="side1">
+                <div class="card-content">
+                    <div class="stars"></div>
+                    <h1 class="elegant-title">You're Invited</h1>
+                    <p class="subtitle">Before we begin...</p>
+                    <form id="nameForm" class="name-form">
+                        <div class="input-group">
+                            <input type="text" id="visitorName" placeholder="Enter your name" required
+                                autocomplete="name">
+                            <label for="visitorName">Your Name</label>
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            Continue
+                            <span class="btn-icon">→</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Side 2: Birthday Content -->
+            <div class="card-side" id="side2">
+                <div class="card-content">
+                    <div class="celebration-visual">
+                        <div class="sparkle sparkle-1">✨</div>
+                        <div class="sparkle sparkle-2">✨</div>
+                        <div class="sparkle sparkle-3">✨</div>
+                    </div>
+                    <h1 class="birthday-title">Celebrating Saumya</h1>
+                    <div class="birthday-message">
+                        <p class="message-line">A special moment</p>
+                        <p class="message-line">A midnight celebration</p>
+                        <p class="message-line">A memory to cherish</p>
+                    </div>
+                    <div class="decorative-line"></div>
+                    <button class="btn-secondary" onclick="navigateToSide(3)">
+                        Event Details
+                        <span class="btn-icon">→</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Side 3: Time & Venue -->
+            <div class="card-side" id="side3">
+                <div class="card-content">
+                    <h1 class="section-title">Join Us</h1>
+                    <div class="event-details">
+                        <div class="detail-block">
+                            <div class="detail-icon">📅</div>
+                            <div class="detail-content">
+                                <h3>Gathering</h3>
+                                <p>December 17th, 2024</p>
+                                <p class="detail-sub">Evening onwards</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-block highlight">
+                            <div class="detail-icon">🎂</div>
+                            <div class="detail-content">
+                                <h3>Midnight Celebration</h3>
+                                <p class="emphasis">12:00 AM</p>
+                                <p class="detail-sub">December 18th, 2024</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-block">
+                            <div class="detail-icon">📍</div>
+                            <div class="detail-content">
+                                <h3>Venue</h3>
+                                <p>To be shared personally</p>
+                                <p class="detail-sub">Check your messages</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-secondary" onclick="navigateToSide(4)">
+                        RSVP
+                        <span class="btn-icon">→</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Side 4: RSVP -->
+            <div class="card-side" id="side4">
+                <div class="card-content">
+                    <h1 class="section-title">Will you be there?</h1>
+                    <p class="rsvp-question" id="rsvpQuestion">
+                        Will you be there when the clock hits 12, <span class="visitor-name-display"></span>?
+                    </p>
+
+                    <div class="rsvp-buttons" id="rsvpButtons">
+                        <button class="btn-rsvp btn-yes" onclick="submitRSVP('yes')">
+                            <span class="rsvp-emoji">🎉</span>
+                            I'm In
+                        </button>
+                        <button class="btn-rsvp btn-no" onclick="submitRSVP('no')">
+                            <span class="rsvp-emoji">😔</span>
+                            Can't Make It
+                        </button>
+                    </div>
+
+                    <div class="rsvp-confirmation hidden" id="rsvpConfirmation">
+                        <div class="confirmation-icon">✓</div>
+                        <p class="confirmation-message" id="confirmationMessage"></p>
+                        <button class="btn-change-rsvp" onclick="changeRSVP()">
+                            Change RSVP
+                        </button>
+                    </div>
+
+                    <div class="navigation-dots">
+                        <button class="dot" onclick="navigateToSide(1)" aria-label="Go to side 1"></button>
+                        <button class="dot" onclick="navigateToSide(2)" aria-label="Go to side 2"></button>
+                        <button class="dot" onclick="navigateToSide(3)" aria-label="Go to side 3"></button>
+                        <button class="dot active" aria-label="Current side"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
