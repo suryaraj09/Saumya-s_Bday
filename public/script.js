@@ -254,31 +254,38 @@ function createBalloon(container) {
 }
 
 function showConfetti() {
-    const container = document.getElementById('confettiContainer');
-    if (!container) return;
-
-    container.classList.remove('hidden');
-    container.innerHTML = ''; // Clear previous
-
-    // Create 50 confetti pieces
-    for (let i = 0; i < 50; i++) {
-        const piece = document.createElement('div');
-        piece.classList.add('confetti-piece');
-
-        // Random style
-        piece.style.left = `${Math.random() * 100}%`;
-        piece.style.animationDelay = `${Math.random() * 2}s`;
-        piece.style.backgroundColor = getRandomColor();
-        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
-
-        container.appendChild(piece);
+    // Check if library is loaded
+    if (typeof confetti === 'undefined') {
+        console.warn('Canvas Confetti library not loaded');
+        return;
     }
 
-    // Cleanup after animation
-    setTimeout(() => {
-        container.classList.add('hidden');
-        container.innerHTML = '';
-    }, 4000);
+    const duration = 3000;
+    const end = Date.now() + duration;
+    const colors = ['#d4af37', '#6b4ce6', '#f4e4c1', '#10b981', '#ff69b4'];
+
+    (function frame() {
+        // Launch from left edge
+        confetti({
+            particleCount: 5,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: colors
+        });
+        // Launch from right edge
+        confetti({
+            particleCount: 5,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: colors
+        });
+
+        if (Date.now() < end) {
+            requestAnimationFrame(frame);
+        }
+    }());
 }
 
 function showSadEmoji() {
