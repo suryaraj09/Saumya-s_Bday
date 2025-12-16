@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="balloonGradient" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#9b7ce6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6b4ce6;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  <!-- String -->
+  <path d="M50 85 Q 50 95 55 100" stroke="#b8c5d6" stroke-width="2" fill="none"/>
+  <!-- Balloon Body -->
+  <path d="M50 5 C 25 5 10 25 10 45 C 10 70 40 85 47 85 L 53 85 C 60 85 90 70 90 45 C 90 25 75 5 50 5 Z" fill="url(#balloonGradient)"/>
+  <!-- Knot -->
+  <path d="M47 85 L 53 85 L 55 90 L 45 90 Z" fill="#6b4ce6"/>
+  <!-- Shine -->
+  <ellipse cx="30" cy="25" rx="10" ry="15" fill="white" opacity="0.2" transform="rotate(-20 30 25)"/>
+</svg>
