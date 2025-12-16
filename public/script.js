@@ -130,8 +130,8 @@ async function submitRSVP(response) {
             ? 'http://localhost:3000/api/rsvp'
             : '/api/rsvp';
 
-        // Determine if this is an update or new submission
-        const method = hasSubmittedRSVP ? 'PUT' : 'POST';
+        // Always use POST (Backend handles Upsert/Update based on name)
+        const method = 'POST';
 
         // Submit to backend
         const result = await fetch(apiUrl, {
