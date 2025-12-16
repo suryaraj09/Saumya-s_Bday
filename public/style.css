@@ -1,0 +1,773 @@
+/* ===================================
+   CSS Custom Properties & Design System
+   =================================== */
+:root {
+    /* Midnight Theme Colors */
+    --color-midnight: #0a0e27;
+    --color-deep-blue: #1a1f3a;
+    --color-purple: #2d1b4e;
+    --color-accent-purple: #6b4ce6;
+    --color-accent-gold: #d4af37;
+    --color-soft-gold: #f4e4c1;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #b8c5d6;
+    --color-text-muted: #7a8ba3;
+
+    /* Gradients */
+    --gradient-midnight: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #2d1b4e 100%);
+    --gradient-accent: linear-gradient(135deg, #6b4ce6 0%, #9b7ce6 100%);
+    --gradient-gold: linear-gradient(135deg, #d4af37 0%, #f4e4c1 100%);
+
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+
+    /* Typography */
+    --font-primary: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-size-xs: 0.875rem;
+    --font-size-sm: 1rem;
+    --font-size-md: 1.125rem;
+    --font-size-lg: 1.5rem;
+    --font-size-xl: 2rem;
+    --font-size-xxl: 2.5rem;
+
+    /* Effects */
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 30px rgba(107, 76, 230, 0.3);
+    --blur-glass: blur(10px);
+
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ===================================
+   Reset & Base Styles
+   =================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    background: var(--gradient-midnight);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(107, 76, 230, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ===================================
+   Container & Card Wrapper
+   =================================== */
+.container {
+    width: 100%;
+    max-width: 500px;
+    padding: var(--spacing-md);
+    position: relative;
+    z-index: 1;
+}
+
+.card-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    perspective: 1000px;
+}
+
+/* ===================================
+   Card Sides
+   =================================== */
+.card-side {
+    position: absolute;
+    width: 100%;
+    min-height: 600px;
+    background: rgba(26, 31, 58, 0.6);
+    backdrop-filter: var(--blur-glass);
+    border-radius: 24px;
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transform: rotateY(-90deg) scale(0.8);
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: none;
+}
+
+.card-side.active {
+    opacity: 1;
+    transform: rotateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.card-side.exit-left {
+    opacity: 0;
+    transform: rotateY(90deg) scale(0.8);
+}
+
+.card-side.exit-right {
+    opacity: 0;
+    transform: rotateY(-90deg) scale(0.8);
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 520px;
+    text-align: center;
+}
+
+/* ===================================
+   Side 1: Recipient Entry
+   =================================== */
+.stars {
+    position: absolute;
+    top: var(--spacing-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+}
+
+.stars::before {
+    content: '✨ ⭐ ✨';
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.elegant-title {
+    font-size: var(--font-size-xxl);
+    font-weight: 600;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--spacing-sm);
+    letter-spacing: 0.5px;
+}
+
+.subtitle {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-xl);
+    font-weight: 300;
+}
+
+.name-form {
+    width: 100%;
+    max-width: 350px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: var(--spacing-lg);
+}
+
+.input-group input {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-md);
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-md);
+    font-family: var(--font-primary);
+    transition: var(--transition-smooth);
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: var(--color-accent-purple);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 4px rgba(107, 76, 230, 0.1);
+}
+
+.input-group input::placeholder {
+    color: var(--color-text-muted);
+}
+
+.input-group label {
+    position: absolute;
+    top: -10px;
+    left: var(--spacing-md);
+    background: var(--color-deep-blue);
+    padding: 0 var(--spacing-xs);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+/* ===================================
+   Buttons
+   =================================== */
+.btn-primary,
+.btn-secondary,
+.btn-rsvp {
+    padding: var(--spacing-md) var(--spacing-xl);
+    border: none;
+    border-radius: 12px;
+    font-size: var(--font-size-md);
+    font-family: var(--font-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: var(--gradient-accent);
+    color: var(--color-text-primary);
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--color-accent-purple);
+}
+
+.btn-icon {
+    font-size: 1.2rem;
+    transition: var(--transition-smooth);
+}
+
+.btn-primary:hover .btn-icon,
+.btn-secondary:hover .btn-icon {
+    transform: translateX(4px);
+}
+
+/* ===================================
+   Side 2: Birthday Content
+   =================================== */
+.celebration-visual {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-bottom: var(--spacing-lg);
+}
+
+.sparkle {
+    position: absolute;
+    font-size: 2rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.sparkle-1 {
+    top: 0;
+    left: 0;
+    animation-delay: 0s;
+}
+
+.sparkle-2 {
+    top: 0;
+    right: 0;
+    animation-delay: 0.5s;
+}
+
+.sparkle-3 {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: 1s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.birthday-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.birthday-message {
+    margin-bottom: var(--spacing-xl);
+}
+
+.message-line {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 300;
+    line-height: 1.6;
+}
+
+.decorative-line {
+    width: 60px;
+    height: 2px;
+    background: var(--gradient-gold);
+    margin: var(--spacing-lg) auto;
+    border-radius: 2px;
+}
+
+/* ===================================
+   Side 3: Time & Venue
+   =================================== */
+.section-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    margin-bottom: var(--spacing-xl);
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.event-details {
+    width: 100%;
+    margin-bottom: var(--spacing-xl);
+}
+
+.detail-block {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition-smooth);
+}
+
+.detail-block:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(4px);
+}
+
+.detail-block.highlight {
+    background: rgba(107, 76, 230, 0.15);
+    border-color: var(--color-accent-purple);
+}
+
+.detail-icon {
+    font-size: 2rem;
+    min-width: 50px;
+    text-align: center;
+}
+
+.detail-content {
+    text-align: left;
+    flex: 1;
+}
+
+.detail-content h3 {
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-text-primary);
+}
+
+.detail-content p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.detail-sub {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+}
+
+.emphasis {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===================================
+   Side 4: RSVP
+   =================================== */
+.rsvp-question {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-xl);
+    line-height: 1.6;
+}
+
+.visitor-name-display {
+    color: var(--color-accent-gold);
+    font-weight: 600;
+}
+
+.rsvp-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: var(--spacing-xl);
+}
+
+.btn-rsvp {
+    width: 100%;
+    justify-content: center;
+    font-size: var(--font-size-md);
+    padding: var(--spacing-md);
+}
+
+.btn-yes {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.btn-yes:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+}
+
+.btn-no {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-no:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.rsvp-emoji {
+    font-size: 1.5rem;
+}
+
+.rsvp-confirmation {
+    text-align: center;
+}
+
+.rsvp-confirmation.hidden {
+    display: none;
+}
+
+.confirmation-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: white;
+    margin: 0 auto var(--spacing-lg);
+    animation: scaleIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.confirmation-message {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-lg);
+}
+
+.btn-change-rsvp {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    font-size: var(--font-size-sm);
+    font-family: var(--font-primary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.btn-change-rsvp:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--color-accent-purple);
+    transform: translateY(-2px);
+}
+
+/* ===================================
+   Navigation Dots
+   =================================== */
+.navigation-dots {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+    margin-top: var(--spacing-lg);
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    padding: 0;
+}
+
+.dot:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(1.2);
+}
+
+.dot.active {
+    background: var(--color-accent-gold);
+    width: 24px;
+    border-radius: 5px;
+}
+
+/* ===================================
+   Utility Classes
+   =================================== */
+.hidden {
+    display: none !important;
+}
+
+/* ===================================
+   Responsive Design
+   =================================== */
+@media (max-width: 600px) {
+    :root {
+        --font-size-xxl: 2rem;
+        --font-size-xl: 1.75rem;
+        --font-size-lg: 1.25rem;
+        --spacing-xl: 2rem;
+    }
+
+    .container {
+        padding: var(--spacing-sm);
+    }
+
+    .card-side {
+        padding: var(--spacing-lg);
+        min-height: 550px;
+    }
+
+    .card-content {
+        min-height: 470px;
+    }
+}
+
+@media (max-width: 400px) {
+    .card-side {
+        padding: var(--spacing-md);
+    }
+
+    .detail-block {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .detail-content {
+        text-align: center;
+    }
+}
+
+/* ===================================
+   Animations & Micro-interactions
+   =================================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-side.active .card-content>* {
+    animation: fadeIn 0.6s ease-out backwards;
+}
+
+.card-side.active .card-content>*:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.card-side.active .card-content>*:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.card-side.active .card-content>*:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.card-side.active .card-content>*:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.card-side.active .card-content>*:nth-child(5) {
+    animation-delay: 0.5s;
+} 
+ / *   = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =  
+       B a l l o o n s   &   C o n f e t t i  
+       = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =   * /  
+ . b a l l o o n s   {  
+         p o s i t i o n :   f i x e d ;  
+         t o p :   0 ;  
+         l e f t :   0 ;  
+         w i d t h :   1 0 0 % ;  
+         h e i g h t :   1 0 0 % ;  
+         p o i n t e r - e v e n t s :   n o n e ;  
+         z - i n d e x :   0 ;  
+         o v e r f l o w :   h i d d e n ;  
+ }  
+  
+ . b a l l o o n   {  
+         p o s i t i o n :   a b s o l u t e ;  
+         b o t t o m :   - 1 0 0 p x ;  
+         w i d t h :   3 0 p x ;  
+         h e i g h t :   4 0 p x ;  
+         b a c k g r o u n d :   v a r ( - - c o l o r - a c c e n t - p u r p l e ) ;  
+         b o r d e r - r a d i u s :   5 0 % ;  
+         o p a c i t y :   0 . 6 ;  
+         a n i m a t i o n :   f l o a t B a l l o o n   1 5 s   e a s e - i n - o u t   i n f i n i t e ;  
+ }  
+  
+ . b a l l o o n : : b e f o r e   {  
+         c o n t e n t :   ' ' ;  
+         p o s i t i o n :   a b s o l u t e ;  
+         b o t t o m :   - 1 0 p x ;  
+         l e f t :   5 0 % ;  
+         t r a n s f o r m :   t r a n s l a t e X ( - 5 0 % ) ;  
+         w i d t h :   2 p x ;  
+         h e i g h t :   1 0 p x ;  
+         b a c k g r o u n d :   c u r r e n t C o l o r ;  
+ }  
+  
+ . b a l l o o n : n t h - c h i l d ( e v e n )   {  
+         b a c k g r o u n d :   v a r ( - - c o l o r - a c c e n t - g o l d ) ;  
+ }  
+  
+ . b a l l o o n : n t h - c h i l d ( 3 n )   {  
+         b a c k g r o u n d :   # F F 6 9 B 4 ;   / *   H o t p i n k   f o r   v a r i e t y   * /  
+ }  
+  
+ @ k e y f r a m e s   f l o a t B a l l o o n   {  
+         0 %   {  
+                 t r a n s f o r m :   t r a n s l a t e Y ( 0 )   r o t a t e ( 0 d e g ) ;  
+                 o p a c i t y :   0 ;  
+         }  
+         1 0 %   {  
+                 o p a c i t y :   0 . 8 ;  
+         }  
+         9 0 %   {  
+                 o p a c i t y :   0 . 8 ;  
+         }  
+         1 0 0 %   {  
+                 t r a n s f o r m :   t r a n s l a t e Y ( - 1 2 0 v h )   r o t a t e ( 3 6 0 d e g ) ;  
+                 o p a c i t y :   0 ;  
+         }  
+ }  
+  
+ . c o n f e t t i   {  
+         p o s i t i o n :   a b s o l u t e ;  
+         t o p :   0 ;  
+         l e f t :   0 ;  
+         w i d t h :   1 0 0 % ;  
+         h e i g h t :   1 0 0 % ;  
+         p o i n t e r - e v e n t s :   n o n e ;  
+         z - i n d e x :   1 0 0 ;  
+         o v e r f l o w :   h i d d e n ;  
+ }  
+  
+ . c o n f e t t i - p i e c e   {  
+         p o s i t i o n :   a b s o l u t e ;  
+         w i d t h :   1 0 p x ;  
+         h e i g h t :   1 0 p x ;  
+         b a c k g r o u n d :   v a r ( - - c o l o r - a c c e n t - g o l d ) ;  
+         t o p :   - 2 0 p x ;  
+         a n i m a t i o n :   c o n f e t t i F a l l   3 s   l i n e a r   f o r w a r d s ;  
+ }  
+  
+ @ k e y f r a m e s   c o n f e t t i F a l l   {  
+         0 %   {  
+                 t r a n s f o r m :   t r a n s l a t e Y ( 0 )   r o t a t e ( 0 d e g ) ;  
+                 o p a c i t y :   1 ;  
+         }  
+         1 0 0 %   {  
+                 t r a n s f o r m :   t r a n s l a t e Y ( 1 0 0 v h )   r o t a t e ( 7 2 0 d e g ) ;  
+                 o p a c i t y :   0 ;  
+         }  
+ }  
+  
+ / *   E n h a n c e d   B u t t o n   G l o w   o n   H o v e r   * /  
+ . b t n - p r i m a r y : h o v e r ,   . b t n - r s v p : h o v e r ,   . d e t a i l - b l o c k : h o v e r   {  
+         b o x - s h a d o w :   0   0   1 5 p x   r g b a ( 2 1 2 ,   1 7 5 ,   5 5 ,   0 . 4 ) ;  
+ }  
+ 

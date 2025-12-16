@@ -29,6 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update visitor name displays
     updateVisitorNameDisplays();
+
+    // Initialize balloons
+    initBalloons();
 });
 
 // ===================================
@@ -154,6 +157,13 @@ async function submitRSVP(response) {
 
         showConfirmation(message);
 
+        // Trigger animations
+        if (response === 'yes') {
+            showConfetti();
+        } else {
+            showSadEmoji();
+        }
+
     } catch (error) {
         console.error('Error submitting RSVP:', error);
 
@@ -167,6 +177,13 @@ async function submitRSVP(response) {
             : `We'll miss you, ${visitorName}. Hope to see you soon! 💙`;
 
         showConfirmation(message);
+
+        // Trigger animations
+        if (response === 'yes') {
+            showConfetti();
+        } else {
+            showSadEmoji();
+        }
     }
 }
 
@@ -209,8 +226,109 @@ function resetInvitation() {
     location.reload();
 }
 
+// ===================================
+// Animations & Visuals
+// ===================================
+function initBalloons() {
+    const balloonsContainer = document.querySelector('.balloons');
+    if (!balloonsContainer) return;
+
+    // Create 5 balloons
+    for (let i = 0; i < 5; i++) {
+        createBalloon(balloonsContainer);
+    }
+}
+
+function createBalloon(container) {
+    const balloon = document.createElement('div');
+    balloon.classList.add('balloon');
+
+    // Random position and delay
+    const left = Math.random() * 100;
+    const delay = Math.random() * 10;
+
+    balloon.style.left = `${left}%`;
+    balloon.style.animationDelay = `-${delay}s`;
+
+    container.appendChild(balloon);
+}
+
+function showConfetti() {
+    const container = document.getElementById('confettiContainer');
+    if (!container) return;
+
+    container.classList.remove('hidden');
+    container.innerHTML = ''; // Clear previous
+
+    // Create 50 confetti pieces
+    for (let i = 0; i < 50; i++) {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti-piece');
+
+        // Random style
+        piece.style.left = `${Math.random() * 100}%`;
+        piece.style.animationDelay = `${Math.random() * 2}s`;
+        piece.style.backgroundColor = getRandomColor();
+        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+        container.appendChild(piece);
+    }
+
+    // Cleanup after animation
+    setTimeout(() => {
+        container.classList.add('hidden');
+        container.innerHTML = '';
+    }, 4000);
+}
+
+function showSadEmoji() {
+    const container = document.getElementById('confettiContainer');
+    if (!container) return;
+
+    container.classList.remove('hidden');
+    container.innerHTML = '';
+
+    // Create one big floating sad emoji
+    const emoji = document.createElement('div');
+    emoji.textContent = '😢';
+    emoji.style.fontSize = '8rem';
+    emoji.style.position = 'absolute';
+    emoji.style.left = '50%';
+    emoji.style.top = '50%';
+    emoji.style.transform = 'translate(-50%, -50%)';
+    emoji.style.animation = 'float 3s ease-in-out infinite';
+    emoji.style.filter = 'drop-shadow(0 0 20px rgba(0,0,0,0.5))';
+
+    container.appendChild(emoji);
+
+    // Cleanup
+    setTimeout(() => {
+        container.classList.add('hidden');
+        container.innerHTML = '';
+    }, 4000);
+}
+
+function getRandomColor() {
+    const colors = ['#d4af37', '#6b4ce6', '#f4e4c1', '#10b981', '#ff69b4'];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
 // Make functions globally accessible
 window.navigateToSide = navigateToSide;
 window.submitRSVP = submitRSVP;
 window.changeRSVP = changeRSVP;
 window.resetInvitation = resetInvitation;
+window.initBalloons = initBalloons;
+window.showConfetti = showConfetti;
+window.showSadEmoji = showSadEmoji;
+
+// Initialize visuals on load
+document.addEventListener('DOMContentLoaded', () => {
+    initBalloons();
+
+    // Existing logic...
+    const storedName = localStorage.getItem('visitorName');
+    // ... rest of init is handled by original event listener? 
+    // Wait, the original DOMContentLoaded listener is separate. 
+    // It's safe to have multiple listeners.
+});
