@@ -1,4 +1,4 @@
-const { kv } = require('@vercel/kv');
+const clientPromise = require('./mongodb');
 
 module.exports = async (req, res) => {
   // Enable CORS
@@ -12,9 +12,13 @@ module.exports = async (req, res) => {
   }
 
   try {
+    const client = await clientPromise;
+    const db = client.db('saumya_bday');
+    const collection = db.collection('rsvps');
+
     // GET - Retrieve all RSVP responses
     if (req.method === 'GET') {
-      const responses = await kv.get('rsvp_responses') || [];
+      const responses = await collection.find({}).toArray();
 
       return res.status(200).json({
         success: true,
@@ -23,7 +27,7 @@ module.exports = async (req, res) => {
       });
     }
 
-    // POST - Submit new RSVP
+    // POST - Submit new RSVP or Update existing (Upsert)
     if (req.method === 'POST') {
       const { name, response, timestamp } = req.body;
 
@@ -42,103 +46,27 @@ module.exports = async (req, res) => {
         });
       }
 
-      // Get existing responses
-      const responses = await kv.get('rsvp_responses') || [];
-
-      // Check for existing submission to update (Upsert)
-      const existingIndex = responses.findIndex(r => r.name.toLowerCase() === name.toLowerCase());
-
-      if (existingIndex !== -1) {
-        // Update existing response
-        responses[existingIndex] = {
-          ...responses[existingIndex],
-          response: response,
-          timestamp: timestamp,
-          updatedAt: new Date().toISOString()
-        };
-        console.log(`RSVP updated: ${name} - ${response}`);
-
-        await kv.set('rsvp_responses', responses);
-
-        return res.status(200).json({
-          success: true,
-          message: 'RSVP updated successfully',
-          response: responses[existingIndex]
-        });
-      }
-
-      // Add new response
-      const newResponse = {
-        id: responses.length + 1,
+      // Prepare data
+      const rsvpData = {
         name: name.trim(),
-        response: response,
-        timestamp: timestamp,
-        submittedAt: new Date().toISOString()
-      };
-
-      responses.push(newResponse);
-
-      // Save to Vercel KV
-      await kv.set('rsvp_responses', responses);
-
-      console.log(`New RSVP received: ${name} - ${response}`);
-
-      return res.status(200).json({
-        success: true,
-        message: 'RSVP submitted successfully',
-        response: newResponse
-      });
-    }
-
-    // PUT - Update existing RSVP
-    if (req.method === 'PUT') {
-      const { name, response, timestamp } = req.body;
-
-      // Validate input
-      if (!name || !response || !timestamp) {
-        return res.status(400).json({
-          success: false,
-          message: 'Missing required fields: name, response, timestamp'
-        });
-      }
-
-      if (response !== 'yes' && response !== 'no') {
-        return res.status(400).json({
-          success: false,
-          message: 'Response must be either "yes" or "no"'
-        });
-      }
-
-      // Get existing responses
-      const responses = await kv.get('rsvp_responses') || [];
-
-      // Find existing response
-      const existingIndex = responses.findIndex(r => r.name.toLowerCase() === name.toLowerCase());
-
-      if (existingIndex === -1) {
-        return res.status(404).json({
-          success: false,
-          message: 'RSVP not found. Please submit a new RSVP instead.'
-        });
-      }
-
-      // Update the response
-      responses[existingIndex] = {
-        ...responses[existingIndex],
         response: response,
         timestamp: timestamp,
         updatedAt: new Date().toISOString()
       };
 
-      // Save to Vercel KV
-      await kv.set('rsvp_responses', responses);
+      // Upsert: Update if name exists, otherwise insert
+      const result = await collection.updateOne(
+        { name: { $regex: new RegExp(`^${name.trim()}$`, 'i') } }, // Case-insensitive match
+        { $set: rsvpData, $setOnInsert: { submittedAt: new Date().toISOString() } },
+        { upsert: true }
+      );
 
-      console.log(`RSVP updated: ${name} - ${response}`);
+      console.log(`RSVP processed: ${name} - ${response}`);
 
       return res.status(200).json({
         success: true,
-        message: 'RSVP updated successfully',
-        response: responses[existingIndex]
+        message: 'RSVP submitted successfully',
+        response: rsvpData
       });
     }
 

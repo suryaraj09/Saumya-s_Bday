@@ -1,4 +1,4 @@
-const { kv } = require('@vercel/kv');
+const clientPromise = require('./mongodb');
 
 module.exports = async (req, res) => {
   // Enable CORS
@@ -20,12 +20,18 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const responses = await kv.get('rsvp_responses') || [];
+    const client = await clientPromise;
+    const db = client.db('saumya_bday');
+    const collection = db.collection('rsvps');
+
+    const total = await collection.countDocuments({});
+    const attending = await collection.countDocuments({ response: 'yes' });
+    const notAttending = await collection.countDocuments({ response: 'no' });
 
     const stats = {
-      total: responses.length,
-      attending: responses.filter(r => r.response === 'yes').length,
-      notAttending: responses.filter(r => r.response === 'no').length
+      total: total,
+      attending: attending,
+      notAttending: notAttending
     };
 
     return res.status(200).json({
