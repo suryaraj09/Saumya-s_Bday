@@ -55,7 +55,8 @@
 
 body {
     font-family: var(--font-primary);
-    background: var(--gradient-midnight);
+    background: var(--gradient-midnight) no-repeat fixed center center;
+    background-size: cover;
     color: var(--color-text-primary);
     min-height: 100vh;
     display: flex;
