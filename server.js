@@ -15,7 +15,7 @@ const RESPONSES_FILE = path.join(__dirname, 'responses.json');
 // ===================================
 app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname)); // Serve static files
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from public directory
 
 // ===================================
 // Initialize Responses File
