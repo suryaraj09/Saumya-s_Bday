@@ -77,13 +77,25 @@ app.post('/api/rsvp', async (req, res) => {
         const data = await fs.readFile(RESPONSES_FILE, 'utf8');
         const responses = JSON.parse(data);
 
-        // Check for duplicate submission (same name)
-        const existingResponse = responses.find(r => r.name.toLowerCase() === name.toLowerCase());
-        if (existingResponse) {
-            return res.status(409).json({
-                success: false,
-                message: 'RSVP already submitted for this name',
-                existingResponse: existingResponse
+        // Check for duplicate submission (same name) - Upsert logic
+        const existingIndex = responses.findIndex(r => r.name.toLowerCase() === name.toLowerCase());
+
+        if (existingIndex !== -1) {
+            // Update existing response
+            responses[existingIndex] = {
+                ...responses[existingIndex],
+                response: response,
+                timestamp: timestamp,
+                updatedAt: new Date().toISOString()
+            };
+
+            await fs.writeFile(RESPONSES_FILE, JSON.stringify(responses, null, 2));
+            console.log(`RSVP updated: ${name} - ${response}`);
+
+            return res.json({
+                success: true,
+                message: 'RSVP updated successfully',
+                response: responses[existingIndex]
             });
         }
 

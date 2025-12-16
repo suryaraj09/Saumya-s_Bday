@@ -45,13 +45,25 @@ module.exports = async (req, res) => {
       // Get existing responses
       const responses = await kv.get('rsvp_responses') || [];
 
-      // Check for duplicate submission
-      const existingResponse = responses.find(r => r.name.toLowerCase() === name.toLowerCase());
-      if (existingResponse) {
-        return res.status(409).json({
-          success: false,
-          message: 'RSVP already submitted for this name',
-          existingResponse: existingResponse
+      // Check for existing submission to update (Upsert)
+      const existingIndex = responses.findIndex(r => r.name.toLowerCase() === name.toLowerCase());
+
+      if (existingIndex !== -1) {
+        // Update existing response
+        responses[existingIndex] = {
+          ...responses[existingIndex],
+          response: response,
+          timestamp: timestamp,
+          updatedAt: new Date().toISOString()
+        };
+        console.log(`RSVP updated: ${name} - ${response}`);
+
+        await kv.set('rsvp_responses', responses);
+
+        return res.status(200).json({
+          success: true,
+          message: 'RSVP updated successfully',
+          response: responses[existingIndex]
         });
       }
 
