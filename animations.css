@@ -1,0 +1,97 @@
+
+/* ===================================
+   Balloons & Confetti
+   =================================== */
+.balloons {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.balloon {
+    position: absolute;
+    bottom: -100px;
+    width: 30px;
+    height: 40px;
+    background: var(--color-accent-purple);
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: floatBalloon 15s ease-in-out infinite;
+}
+
+.balloon::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 10px;
+    background: currentColor;
+}
+
+.balloon:nth-child(even) {
+    background: var(--color-accent-gold);
+}
+
+.balloon:nth-child(3n) {
+    background: #FF69B4; /* Hotpink for variety */
+}
+
+@keyframes floatBalloon {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    90% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-120vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.confetti {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--color-accent-gold);
+    top: -20px;
+    animation: confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Enhanced Button Glow on Hover */
+.btn-primary:hover, .btn-rsvp:hover, .detail-block:hover {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+}
